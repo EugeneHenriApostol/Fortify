@@ -6,11 +6,11 @@ using FortifyAPI.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FortifyAPI.Service;
+using FortifyAPI.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 
@@ -40,6 +40,10 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "YourSuperSecretKey"; // store in appsettings.json in production
 var key = Encoding.UTF8.GetBytes(jwtSecret);
 
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IBudgetService, BudgetService>();
+builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
+
 
 builder.Services.AddAuthentication(options =>
 {
@@ -58,20 +62,24 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// swagger
+// Swagger + JWT configuration
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Budget Tracker API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Fortify API",
+        Version = "v1"
+    });
 
-    // JWT auth in Swagger
+    // Add JWT authentication to Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Type = SecuritySchemeType.Http,
+        Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Enter JWT token like: Bearer {your token}"
+        Description = "Enter 'Bearer' [space] and then your token."
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -101,16 +109,17 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(); 
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
-app.MapControllers();
+app.UseAuthentication();
+app.UseAuthorization();
 
+app.MapControllers();
 
 app.Run();

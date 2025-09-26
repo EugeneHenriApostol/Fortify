@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\FortifyAPI\\FortifyAPI.csproj": {}
+    "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\fortifyapi\\FortifyAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\FortifyAPI\\FortifyAPI.csproj": {
+    "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\fortifyapi\\FortifyAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\FortifyAPI\\FortifyAPI.csproj",
+        "projectUniqueName": "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\fortifyapi\\FortifyAPI.csproj",
         "projectName": "FortifyAPI",
-        "projectPath": "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\FortifyAPI\\FortifyAPI.csproj",
+        "projectPath": "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\fortifyapi\\FortifyAPI.csproj",
         "packagesPath": "C:\\Users\\TRAINEE-APOSTOL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\FortifyAPI\\obj\\",
+        "outputPath": "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\fortifyapi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

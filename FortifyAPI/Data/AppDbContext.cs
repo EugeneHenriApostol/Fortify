@@ -54,6 +54,14 @@ namespace FortifyAPI.Data
                     .HasForeignKey(b => b.CategoryId)
                     .OnDelete(DeleteBehavior.Restrict);
 
+                // budget -> category
+                modelBuilder.Entity<Budget>()
+                    .HasOne(b => b.Category)
+                    .WithMany(c => c.Budgets)
+                    .HasForeignKey(b => b.CategoryId)
+                    .IsRequired(false)
+                    .OnDelete(DeleteBehavior.Restrict);
+
                 // set precision for decimals
                 modelBuilder.Entity<Budget>()
                     .Property(b => b.LimitAmount)

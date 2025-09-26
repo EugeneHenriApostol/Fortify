@@ -10,6 +10,6 @@ namespace FortifyAPI.Service
     public interface IAuthService
     {
         Task<(bool Success, string? Token, string? ErrorMessage, object? User)> LoginAsync(LoginDto dto);
-        Task<(bool Success, IEnumerable<IdentityError>? Errors, object? User)> SignUpAsync(SignUpDto dto);
+        Task<(bool Success, IEnumerable<IdentityError>? Errors, UserResponseDto? User)> SignUpAsync(SignUpDto dto);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FortifyAPI.Model;
 
 namespace FortifyAPI.DTO
 {
@@ -10,5 +11,6 @@ namespace FortifyAPI.DTO
         public decimal Amount { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
+        public int CategoryId { get; set; }
     }
 }
