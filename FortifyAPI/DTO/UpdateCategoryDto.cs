@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace FortifyAPI.DTO
 {
-    public class CategoryDto
+    public class UpdateCategoryDto
     {
         public int Id { get; set; }
-        public required string Name { get; set; } = string.Empty;
-        public required string Type { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
     }
 }

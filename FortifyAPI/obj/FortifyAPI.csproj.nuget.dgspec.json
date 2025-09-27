@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\fortifyapi\\FortifyAPI.csproj": {}
+    "C:\\Fortify\\FortifyAPI\\FortifyAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\fortifyapi\\FortifyAPI.csproj": {
+    "C:\\Fortify\\FortifyAPI\\FortifyAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\fortifyapi\\FortifyAPI.csproj",
+        "projectUniqueName": "C:\\Fortify\\FortifyAPI\\FortifyAPI.csproj",
         "projectName": "FortifyAPI",
-        "projectPath": "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\fortifyapi\\FortifyAPI.csproj",
-        "packagesPath": "C:\\Users\\TRAINEE-APOSTOL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\TRAINEE-APOSTOL\\VSCode\\FortifyApp\\fortifyapi\\obj\\",
+        "projectPath": "C:\\Fortify\\FortifyAPI\\FortifyAPI.csproj",
+        "packagesPath": "C:\\Users\\eugen\\.nuget\\packages\\",
+        "outputPath": "C:\\Fortify\\FortifyAPI\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\TRAINEE-APOSTOL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\eugen\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

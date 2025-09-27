@@ -15,8 +15,8 @@ namespace FortifyAPI.Model
         public required string Type { get; set; } // income or expense
 
         // foreign key
-        public required string UserId { get; set; }
-        public required User User { get; set; }
+        public string? UserId { get; set; }
+        public User? User { get; set; }
 
         // navigation properties
         public ICollection<Budget> Budgets { get; set; } = new List<Budget>();
