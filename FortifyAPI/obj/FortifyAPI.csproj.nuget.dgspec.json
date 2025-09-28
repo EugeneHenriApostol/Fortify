@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Fortify\\FortifyAPI\\FortifyAPI.csproj": {}
+    "C:\\Fortify\\fortifyapi\\FortifyAPI.csproj": {}
   },
   "projects": {
-    "C:\\Fortify\\FortifyAPI\\FortifyAPI.csproj": {
+    "C:\\Fortify\\fortifyapi\\FortifyAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Fortify\\FortifyAPI\\FortifyAPI.csproj",
+        "projectUniqueName": "C:\\Fortify\\fortifyapi\\FortifyAPI.csproj",
         "projectName": "FortifyAPI",
-        "projectPath": "C:\\Fortify\\FortifyAPI\\FortifyAPI.csproj",
+        "projectPath": "C:\\Fortify\\fortifyapi\\FortifyAPI.csproj",
         "packagesPath": "C:\\Users\\eugen\\.nuget\\packages\\",
-        "outputPath": "C:\\Fortify\\FortifyAPI\\obj\\",
+        "outputPath": "C:\\Fortify\\fortifyapi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\eugen\\AppData\\Roaming\\NuGet\\NuGet.Config"

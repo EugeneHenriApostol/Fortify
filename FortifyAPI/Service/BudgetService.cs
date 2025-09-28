@@ -7,12 +7,13 @@ namespace FortifyAPI.Service
     public class BudgetService : IBudgetService
     {
         private readonly IBudgetRepository _repo;
+
         public BudgetService(IBudgetRepository repo)
         {
             _repo = repo;
         }
 
-        public async Task<Budget> SetBudgetAsync(string userId, BudgetDto dto)
+        public async Task<BudgetResponseDto> SetBudgetAsync(string userId, BudgetDto dto)
         {
             var existing = await _repo.GetBudgetAsync(userId, dto.Month, dto.Year);
             if (existing != null) throw new Exception("Budget already exists for this month");
@@ -26,12 +27,36 @@ namespace FortifyAPI.Service
                 CategoryId = dto.CategoryId
             };
 
-            return await _repo.AddBudgetAsync(budget);
+            budget = await _repo.AddBudgetAsync(budget);
+
+            return new BudgetResponseDto
+            {
+                Id = budget.Id,
+                LimitAmount = budget.LimitAmount,
+                Month = budget.Month,
+                Year = budget.Year,
+                CategoryId = budget.CategoryId,
+                CategoryName = budget.Category?.Name,
+                CreatedAt = budget.CreatedAt
+            };
         }
 
-        public async Task<Budget?> GetBudgetAsync(string userId, int month, int year)
+        public async Task<BudgetResponseDto?> GetBudgetAsync(string userId, int month, int year)
         {
-            return await _repo.GetBudgetAsync(userId, month, year);
+            var budget = await _repo.GetBudgetAsync(userId, month, year);
+
+            if (budget == null) return null;
+
+            return new BudgetResponseDto
+            {
+                Id = budget.Id,
+                LimitAmount = budget.LimitAmount,
+                Month = budget.Month,
+                Year = budget.Year,
+                CategoryId = budget.CategoryId,
+                CategoryName = budget.Category?.Name,
+                CreatedAt = budget.CreatedAt
+            };
         }
     }
 }
