@@ -7,7 +7,8 @@ namespace FortifyAPI.DTO
 {
     public class CategoryDto
     {
-        public required string Name { get; set; }
-        public required string Type { get; set; }
+        public int Id { get; set; }
+        public required string Name { get; set; } = string.Empty;
+        public required string Type { get; set; } = string.Empty;
     }
 }

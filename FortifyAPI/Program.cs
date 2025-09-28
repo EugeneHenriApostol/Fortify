@@ -40,9 +40,14 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "YourSuperSecretKey"; // store in appsettings.json in production
 var key = Encoding.UTF8.GetBytes(jwtSecret);
 
+// dependency injection
+builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IBudgetService, BudgetService>();
-builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 
 builder.Services.AddAuthentication(options =>
