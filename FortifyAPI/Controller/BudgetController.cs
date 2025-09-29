@@ -1,9 +1,7 @@
 using System.Security.Claims;
 using FortifyAPI.DTO;
-using FortifyAPI.Model;
 using FortifyAPI.Service;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FortifyAPI.Controller
@@ -13,12 +11,10 @@ namespace FortifyAPI.Controller
     public class BudgetController : ControllerBase
     {
         private readonly IBudgetService _budgetService;
-        private readonly UserManager<User> _userManager;
 
-        public BudgetController(IBudgetService budgetService, UserManager<User> userManager)
+        public BudgetController(IBudgetService budgetService)
         {
             _budgetService = budgetService;
-            _userManager = userManager;
         }
 
         [HttpPost]

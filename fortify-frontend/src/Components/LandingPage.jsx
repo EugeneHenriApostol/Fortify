@@ -9,7 +9,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <PiggyBank className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold text-foreground">FinTrack</span>
+            <span className="text-2xl font-bold text-foreground">Fortify</span>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
             <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -18,7 +18,7 @@ export default function LandingPage() {
             <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">
               About
             </a>
-            <Link href="/login">
+            <Link to="/login">
               <button className="mr-2 bg-transparent border border-primary text-primary px-4 py-2 rounded hover:bg-primary/10 transition">
                 Login
               </button>
@@ -106,7 +106,7 @@ export default function LandingPage() {
             Ready to take control of your finances?
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join thousands of users who have already transformed their financial habits with FinTrack.
+            Join thousands of users who have already transformed their financial habits with Fortify.
           </p>
           <Link href="/signup">
             <button className="text-lg px-8 py-3 rounded bg-primary text-white hover:bg-primary/90 flex items-center justify-center gap-2">
@@ -121,9 +121,9 @@ export default function LandingPage() {
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <PiggyBank className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold text-foreground">FinTrack</span>
+            <span className="text-xl font-bold text-foreground">Fortify</span>
           </div>
-          <p className="text-muted-foreground">© 2025 FinTrack. All rights reserved.</p>
+          <p className="text-muted-foreground">© 2025 Fortify. All rights reserved.</p>
         </div>
       </footer>
     </div>

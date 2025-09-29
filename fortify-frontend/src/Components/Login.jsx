@@ -9,32 +9,37 @@ export default function LoginPage() {
   });
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await fetch("http://localhost:5046/api/Login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-      credentials: "include", // important for cookies
-    });
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5046/api/Login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+        credentials: "include", 
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      alert(errorData.message || "Login failed");
-      return;
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(errorData.message || "Login failed");
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Login successful:", data);
+      
+      // Debug: Check if cookie is set immediately
+      console.log("Cookies after login:", document.cookie);
+      
+      // Use window.location.href instead of navigate for immediate redirect
+      window.location.href = "/dashboard";
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Something went wrong. Try again.");
     }
+  };
 
-    const data = await response.json();
-    console.log("Login successful:", data);
-    // The cookie will be automatically set if backend sends it
-    window.location.href = "/dashboard"; // redirect after login
-  } catch (err) {
-    console.error("Login error:", err);
-    alert("Something went wrong. Try again.");
-  }
-};
 
 
   const handleChange = (e) => {
@@ -50,7 +55,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="flex items-center justify-center space-x-2 mb-8">
           <PiggyBank className="h-8 w-8 text-blue-600" />
-          <span className="text-2xl font-bold text-gray-900">FinTrack</span>
+          <span className="text-2xl font-bold text-gray-900">Fortify</span>
         </div>
 
         <div className="bg-white shadow-md rounded-lg p-6">
