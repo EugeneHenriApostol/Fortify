@@ -50,5 +50,22 @@ namespace FortifyAPI.Controller
         {
             return Ok(new { message = "Authenticated" });
         }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(-1)
+            };
+
+            Response.Cookies.Append("jwt", "", cookieOptions);
+
+            return Ok(new { message = "Logged out successfully" });
+        }
     }
 }

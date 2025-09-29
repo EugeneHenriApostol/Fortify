@@ -21,6 +21,26 @@ export default function DashboardPage() {
 
     checkAuth();
   }, []);
+  
+  // Logout
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("http://localhost:5046/api/Login/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+
+      if (!res.ok) {
+        throw new Error("Logout failed");
+      }
+
+      // redirect after logout
+      window.location.href = "/";
+    } catch(err) {
+      console.error(err);
+      alert("Logout Failed");
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -32,7 +52,9 @@ export default function DashboardPage() {
               <h1 className="text-xl font-bold text-gray-900">Fortify</h1>
             </div>
             <div className="flex space-x-4">
-              <button className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+              <button
+               onClick={handleLogout}
+               className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
                 Logout
               </button>
             </div>
