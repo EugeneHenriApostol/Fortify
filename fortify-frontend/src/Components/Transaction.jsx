@@ -234,9 +234,9 @@ export default function TransactionsPage() {
             </div>
             
             <div className="flex justify-between text-sm text-gray-600">
-              <span>Spent: ${totalSpent.toFixed(2)}</span>
-              <span>Remaining: ${Math.max(remainingBudget, 0).toFixed(2)}</span>
-              <span>Budget: ${budgetLimit.toFixed(2)}</span>
+              <span>Spent: ₱{totalSpent.toFixed(2)}</span>
+              <span>Remaining: ₱{Math.max(remainingBudget, 0).toFixed(2)}</span>
+              <span>Budget: ₱{budgetLimit.toFixed(2)}</span>
             </div>
           </div>
         )}
@@ -244,11 +244,11 @@ export default function TransactionsPage() {
         {/* Summary */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div className="bg-green-50 p-4 rounded text-center">
-            <div className="text-lg font-bold text-green-900">${totalIncome.toFixed(2)}</div>
+            <div className="text-lg font-bold text-green-900">₱{totalIncome.toFixed(2)}</div>
             <div className="text-sm text-green-600">Income</div>
           </div>
           <div className="bg-red-50 p-4 rounded text-center">
-            <div className="text-lg font-bold text-red-900">${totalExpenses.toFixed(2)}</div>
+            <div className="text-lg font-bold text-red-900">₱{totalExpenses.toFixed(2)}</div>
             <div className="text-sm text-red-600">Expenses</div>
           </div>
           <div className={`p-4 rounded text-center ${
@@ -257,7 +257,7 @@ export default function TransactionsPage() {
             <div className={`text-lg font-bold ${
               budgetStatus === 'over-budget' ? 'text-red-900' : 'text-blue-900'
             }`}>
-              ${remainingBudget.toFixed(2)}
+              ₱{remainingBudget.toFixed(2)}
             </div>
             <div className={`text-sm ${
               budgetStatus === 'over-budget' ? 'text-red-600' : 'text-blue-600'
@@ -297,7 +297,7 @@ export default function TransactionsPage() {
                     <div className={`text-lg font-bold ${
                       transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
                     }`}>
-                      {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
+                      {transaction.type === 'income' ? '+' : '-'}₱{transaction.amount.toFixed(2)}
                     </div>
                     <div className="flex gap-2">
                       <button 
@@ -406,7 +406,7 @@ export default function TransactionsPage() {
 
               {/* Buttons */}
               <div className="flex gap-2 pt-4">
-                <button
+                <button 
                   type="button"
                   onClick={resetForm}
                   className="flex-1 p-2 border rounded hover:bg-gray-50"

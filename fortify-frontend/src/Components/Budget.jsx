@@ -124,7 +124,7 @@ export default function BudgetsPage() {
           ) : (
             <div>
               <div className="text-3xl font-bold text-gray-900 mb-2">
-                ${budget.limitAmount.toFixed(2)}
+                ₱{budget.limitAmount.toFixed(2)}
               </div>
               <p className="text-gray-600 mb-4">Budget for {currentMonth}</p>
               <button 
