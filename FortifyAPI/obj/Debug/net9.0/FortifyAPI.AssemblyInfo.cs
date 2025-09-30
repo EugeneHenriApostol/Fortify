@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FortifyAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+032e20052623f8e0767092250e5437313a2df4cf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1338ed824318d1413e68517bcdf2210e6d20b64f")]
 [assembly: System.Reflection.AssemblyProductAttribute("FortifyAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FortifyAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
