@@ -52,7 +52,10 @@ namespace FortifyAPI.Controller
         public async Task<IActionResult> Update(int id, [FromBody] TransactionUpdateDto dto)
         {
             var userId = GetUserId();
-            if (id != dto.Id) return BadRequest("Transaction ID mismatch.");
+            if (id != dto.Id)
+            {
+                return BadRequest("Transaction ID mismatch.");
+            }
 
             var updated = await _transactionService.UpdateAsync(dto, userId);
             return Ok(updated);

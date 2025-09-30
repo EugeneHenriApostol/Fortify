@@ -53,5 +53,23 @@ namespace FortifyAPI.Controller
 
             return Ok(budget);
         }
+
+        [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> UpdateBudgetAsync([FromBody] BudgetDto dto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var budget = await _budgetService.UpdateBudgetAsync(userId, dto);
+            if (budget == null)
+            {
+                return NotFound();
+            }
+            return Ok(budget);
+        }
     }
 }

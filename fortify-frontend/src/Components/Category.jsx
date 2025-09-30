@@ -11,25 +11,30 @@ export default function CategoriesPage() {
     type: 'expense'
   });
 
-    useEffect(() => {
+  // check if a user is logged in
+  useEffect(() => {
     const checkAuth = async () => {
-        try {
+      try {
         const res = await fetch("http://localhost:5046/api/Login/me", {
-            credentials: "include",
+          credentials: "include",
         });
 
         if (!res.ok) {
-            window.location.href = "/";
+          window.location.href = "/";
         }
-        fetchCategories();
-        } catch (err) {
+      } catch (err) {
         console.error("Auth check failed", err);
         window.location.href = "/";
-        }
+      }
     };
 
     checkAuth();
-    }, []);
+  }, []);
+
+  // Fetch categories on component mount
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const fetchCategories = async () => {
     try {
@@ -186,6 +191,30 @@ export default function CategoriesPage() {
               ) : (
                 <div className="space-y-3">
                   {expenseCategories.map(category => (
+                    <CategoryCard
+                      key={category.id}
+                      category={category}
+                      onEdit={handleEdit}
+                      onDelete={handleDelete}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Income Categories */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-green-600">Income Categories</h2>
+              <p className="text-gray-600 text-sm">Categories for tracking income</p>
+            </div>
+            <div className="p-6">
+              {incomeCategories.length === 0 ? (
+                <p className="text-gray-500 text-center py-4">No income categories yet</p>
+              ) : (
+                <div className="space-y-3">
+                  {incomeCategories.map(category => (
                     <CategoryCard
                       key={category.id}
                       category={category}

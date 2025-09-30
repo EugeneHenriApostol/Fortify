@@ -28,11 +28,7 @@ export default function LoginPage() {
 
       const data = await response.json();
       console.log("Login successful:", data);
-      
-      // Debug: Check if cookie is set immediately
-      console.log("Cookies after login:", document.cookie);
-      
-      // Use window.location.href instead of navigate for immediate redirect
+  
       window.location.href = "/dashboard";
     } catch (err) {
       console.error("Login error:", err);

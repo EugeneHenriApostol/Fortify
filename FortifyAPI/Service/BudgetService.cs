@@ -24,7 +24,6 @@ namespace FortifyAPI.Service
                 LimitAmount = dto.Amount,
                 Month = dto.Month,
                 Year = dto.Year,
-                CategoryId = dto.CategoryId
             };
 
             budget = await _repo.AddBudgetAsync(budget);
@@ -35,8 +34,6 @@ namespace FortifyAPI.Service
                 LimitAmount = budget.LimitAmount,
                 Month = budget.Month,
                 Year = budget.Year,
-                CategoryId = budget.CategoryId,
-                CategoryName = budget.Category?.Name,
                 CreatedAt = budget.CreatedAt
             };
         }
@@ -53,8 +50,6 @@ namespace FortifyAPI.Service
                 LimitAmount = budget.LimitAmount,
                 Month = budget.Month,
                 Year = budget.Year,
-                CategoryId = budget.CategoryId,
-                CategoryName = budget.Category?.Name,
                 CreatedAt = budget.CreatedAt
             };
         }
@@ -68,7 +63,6 @@ namespace FortifyAPI.Service
             }
 
             existing.LimitAmount = dto.Amount;
-            existing.CategoryId = dto.CategoryId;
             existing.UpdatedAt = DateTime.UtcNow;
 
             var update = await _repo.UpdateBudgetAsync(existing);
@@ -83,8 +77,6 @@ namespace FortifyAPI.Service
                 LimitAmount = update.LimitAmount,
                 Month = update.Month,
                 Year = update.Year,
-                CategoryId = update.CategoryId,
-                CategoryName = update.Category?.Name,
                 CreatedAt = update.CreatedAt
             };
         }

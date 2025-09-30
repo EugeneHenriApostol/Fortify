@@ -98,34 +98,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-            Ready to take control of your finances?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join thousands of users who have already transformed their financial habits with Fortify.
-          </p>
-          <Link href="/signup">
-            <button className="text-lg px-8 py-3 rounded bg-primary text-white hover:bg-primary/90 flex items-center justify-center gap-2">
-              Get Started for Free <ArrowRight className="h-5 w-5" />
-            </button>
-          </Link>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border py-8 px-4">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <PiggyBank className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold text-foreground">Fortify</span>
-          </div>
-          <p className="text-muted-foreground">© 2025 Fortify. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }
