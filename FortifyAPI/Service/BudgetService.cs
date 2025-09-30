@@ -58,5 +58,35 @@ namespace FortifyAPI.Service
                 CreatedAt = budget.CreatedAt
             };
         }
+
+        public async Task<BudgetResponseDto?> UpdateBudgetAsync(string userId, BudgetDto dto)
+        {
+            var existing = await _repo.GetBudgetAsync(userId, dto.Month, dto.Year);
+            if (existing == null)
+            {
+                return null;
+            }
+
+            existing.LimitAmount = dto.Amount;
+            existing.CategoryId = dto.CategoryId;
+            existing.UpdatedAt = DateTime.UtcNow;
+
+            var update = await _repo.UpdateBudgetAsync(existing);
+            if (update == null)
+            {
+                return null;
+            }
+
+            return new BudgetResponseDto
+            {
+                Id = update.Id,
+                LimitAmount = update.LimitAmount,
+                Month = update.Month,
+                Year = update.Year,
+                CategoryId = update.CategoryId,
+                CategoryName = update.Category?.Name,
+                CreatedAt = update.CreatedAt
+            };
+        }
     }
 }

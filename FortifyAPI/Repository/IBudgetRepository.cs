@@ -12,5 +12,6 @@ namespace FortifyAPI.Repository
     {
         Task<Budget> AddBudgetAsync(Budget budget);
         Task<Budget?> GetBudgetAsync(string userId, int month, int year);
+        Task<Budget?> UpdateBudgetAsync(Budget budget);
     }
 }

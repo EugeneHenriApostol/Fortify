@@ -7,5 +7,6 @@ namespace FortifyAPI.Service
     {
         Task<BudgetResponseDto> SetBudgetAsync(string userId, BudgetDto dto);
         Task<BudgetResponseDto?> GetBudgetAsync(string userId, int month, int year);
+        Task<BudgetResponseDto?> UpdateBudgetAsync(string userId, BudgetDto dto);
     }
 }

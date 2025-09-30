@@ -23,9 +23,16 @@ namespace FortifyAPI.Repository
             return budget;
         }
 
-        public Task<Budget?> GetBudgetAsync(string userId, int month, int year)
+        public async Task<Budget?> GetBudgetAsync(string userId, int month, int year)
         {
-            return _context.Budgets.FirstOrDefaultAsync(b => b.UserId == userId && b.Month == month && b.Year == year);
+            return await _context.Budgets.FirstOrDefaultAsync(b => b.UserId == userId && b.Month == month && b.Year == year);
+        }
+
+        public async Task<Budget?> UpdateBudgetAsync(Budget budget)
+        {
+            _context.Budgets.Update(budget);
+            await _context.SaveChangesAsync();
+            return budget;
         }
     }
 }
