@@ -43,7 +43,10 @@ namespace FortifyAPI.Repository
             var existing = await _context.Categories
                 .FirstOrDefaultAsync(c => c.Id == category.Id && c.UserId == category.UserId);
 
-            if (existing == null) return null;
+            if (existing == null)
+            {
+                return null;
+            }
 
             existing.Name = category.Name;
             existing.Type = category.Type;
@@ -58,7 +61,10 @@ namespace FortifyAPI.Repository
             var category = await _context.Categories
                 .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
 
-            if (category == null) return false;
+            if (category == null)
+            {
+                return false;
+            }
 
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();

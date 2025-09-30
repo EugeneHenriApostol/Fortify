@@ -13,5 +13,6 @@ namespace FortifyAPI.Repository
         Task<Transaction> AddAsync(Transaction transaction);
         Task<Transaction> UpdateAsync(Transaction transaction);
         Task<bool> DeleteAsync(int id, string userId);
+        Task<IEnumerable<Transaction>> GetByMonthAsync(string userId, int month, int year);
     }
 }

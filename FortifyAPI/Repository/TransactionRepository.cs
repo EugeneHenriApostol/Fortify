@@ -55,5 +55,14 @@ namespace FortifyAPI.Repository
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<Transaction>> GetByMonthAsync(string userId, int month, int year)
+        {
+            return await _context.Transactions.Include(t => t.Category)
+                .Where(t => t.UserId == userId && t.Date.Month == month && t.Date.Year == year)
+                .OrderByDescending(t => t.Date)
+                .ThenByDescending(t => t.CreatedAt)
+                .ToListAsync();
+        }
     }
 }

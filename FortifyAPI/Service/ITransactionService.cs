@@ -14,5 +14,6 @@ namespace FortifyAPI.Service
         Task<TransactionResponseDto> AddAsync(TransactionCreateDto dto, string userId);
         Task<TransactionResponseDto> UpdateAsync(TransactionUpdateDto dto, string userId);
         Task<bool> DeleteAsync(int id, string userId);
+        Task<IEnumerable<TransactionResponseDto>> GetByMonthAsync(string userId, int month, int year);
     }
 }

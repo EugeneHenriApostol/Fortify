@@ -25,6 +25,7 @@ namespace FortifyAPI.Controller
         private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var userId = GetUserId();
@@ -33,6 +34,7 @@ namespace FortifyAPI.Controller
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             var userId = GetUserId();
@@ -41,6 +43,7 @@ namespace FortifyAPI.Controller
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] TransactionCreateDto dto)
         {
             var userId = GetUserId();
@@ -49,6 +52,7 @@ namespace FortifyAPI.Controller
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] TransactionUpdateDto dto)
         {
             var userId = GetUserId();
@@ -62,11 +66,20 @@ namespace FortifyAPI.Controller
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var userId = GetUserId();
             var deleted = await _transactionService.DeleteAsync(id, userId);
             return deleted ? NoContent() : NotFound();
+        }
+
+        [HttpGet("month/{month}/{year}")]
+        public async Task<IActionResult> GetByMonth(int month, int year)
+        {
+            var userId = GetUserId();
+            var transactions = await _transactionService.GetByMonthAsync(userId, month, year);
+            return Ok(transactions);
         }
     }
 }

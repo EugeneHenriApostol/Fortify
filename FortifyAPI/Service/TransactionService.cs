@@ -112,5 +112,20 @@ namespace FortifyAPI.Service
         {
             return await _transactionRepo.DeleteAsync(id, userId);
         }
+
+        public async Task<IEnumerable<TransactionResponseDto>> GetByMonthAsync(string userId, int month, int year)
+        {
+            var transactions = await _transactionRepo.GetByMonthAsync(userId, month, year);
+            return transactions.Select(t => new TransactionResponseDto
+            {
+                Id = t.Id,
+                Amount = t.Amount,
+                Type = t.Type,
+                Date = t.Date,
+                Description = t.Description,
+                CategoryId = t.CategoryId,
+                CategoryName = t.Category!.Name
+            });
+        }
     }
 }

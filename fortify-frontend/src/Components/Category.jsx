@@ -1,37 +1,30 @@
 import { useState, useEffect } from 'react';
 
+// Main Categories Page
 export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    type: 'expense'
-  });
+  const [formData, setFormData] = useState({ name: '', type: 'expense' });
 
-  // check if a user is logged in
+  // Check if user is logged in
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const res = await fetch("http://localhost:5046/api/Login/me", {
           credentials: "include",
         });
-
-        if (!res.ok) {
-          window.location.href = "/";
-        }
-      } catch (err) {
-        console.error("Auth check failed", err);
+        if (!res.ok) window.location.href = "/";
+      } catch {
         window.location.href = "/";
       }
     };
-
     checkAuth();
   }, []);
 
-  // Fetch categories on component mount
+  // Fetch categories on mount
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -39,19 +32,11 @@ export default function CategoriesPage() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5046/api/Categories', {
-        method: 'GET',
+      const res = await fetch('http://localhost:5046/api/Categories', {
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch categories');
-      }
-
-      const data = await response.json();
+      if (!res.ok) throw new Error('Failed to fetch categories');
+      const data = await res.json();
       setCategories(data);
     } catch (err) {
       setError(err.message);
@@ -65,30 +50,33 @@ export default function CategoriesPage() {
     setError('');
 
     try {
-      const url = editingCategory 
-        ? `http://localhost:5046/api/Categories/${editingCategory.id}`
-        : 'http://localhost:5046/api/Categories';
-      
-      const method = editingCategory ? 'PUT' : 'POST';
-      const payload = editingCategory 
-        ? { id: editingCategory.id, ...formData }
-        : formData;
+      let url;
+      let method;
+      let payload;
 
-      const response = await fetch(url, {
+      if (editingCategory) {
+        url = `http://localhost:5046/api/Categories/${editingCategory.id}`;
+        method = 'PUT';
+        payload = { id: editingCategory.id, ...formData };
+      } else {
+        url = 'http://localhost:5046/api/Categories';
+        method = 'POST';
+        payload = formData;
+      }
+
+      const res = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to save category');
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.message || 'Failed to save category');
       }
 
-      await fetchCategories(); // Refresh the list
+      await fetchCategories();
       resetForm();
     } catch (err) {
       setError(err.message);
@@ -96,21 +84,14 @@ export default function CategoriesPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this category?')) {
-      return;
-    }
-
+    if (!window.confirm('Are you sure you want to delete this category?')) return;
     try {
-      const response = await fetch(`http://localhost:5046/api/Categories/${id}`, {
+      const res = await fetch(`http://localhost:5046/api/Categories/${id}`, {
         method: 'DELETE',
         credentials: 'include',
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete category');
-      }
-
-      await fetchCategories(); // Refresh the list
+      if (!res.ok) throw new Error('Failed to delete category');
+      await fetchCategories();
     } catch (err) {
       setError(err.message);
     }
@@ -118,10 +99,7 @@ export default function CategoriesPage() {
 
   const handleEdit = (category) => {
     setEditingCategory(category);
-    setFormData({
-      name: category.name,
-      type: category.type
-    });
+    setFormData({ name: category.name, type: category.type });
     setShowModal(true);
   };
 
@@ -133,13 +111,9 @@ export default function CategoriesPage() {
   };
 
   const handleChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Group categories by type for better organization
   const expenseCategories = categories.filter(cat => cat.type === 'expense');
   const incomeCategories = categories.filter(cat => cat.type === 'income');
 
@@ -160,7 +134,7 @@ export default function CategoriesPage() {
           <p className="text-gray-600 mt-2">Manage your income and expense categories</p>
         </div>
 
-        {/* Error Message */}
+        {/* Error */}
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
             {error}
@@ -179,56 +153,23 @@ export default function CategoriesPage() {
 
         {/* Categories Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Expense Categories */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-red-600">Expense Categories</h2>
-              <p className="text-gray-600 text-sm">Categories for tracking expenses</p>
-            </div>
-            <div className="p-6">
-              {expenseCategories.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">No expense categories yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {expenseCategories.map(category => (
-                    <CategoryCard
-                      key={category.id}
-                      category={category}
-                      onEdit={handleEdit}
-                      onDelete={handleDelete}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Income Categories */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-green-600">Income Categories</h2>
-              <p className="text-gray-600 text-sm">Categories for tracking income</p>
-            </div>
-            <div className="p-6">
-              {incomeCategories.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">No income categories yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {incomeCategories.map(category => (
-                    <CategoryCard
-                      key={category.id}
-                      category={category}
-                      onEdit={handleEdit}
-                      onDelete={handleDelete}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          <CategoryList
+            title="Expense Categories"
+            categories={expenseCategories}
+            color="red"
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+          <CategoryList
+            title="Income Categories"
+            categories={incomeCategories}
+            color="green"
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
         </div>
 
-        {/* Add/Edit Category Modal */}
+        {/* Modal */}
         {showModal && (
           <CategoryModal
             formData={formData}
@@ -244,10 +185,37 @@ export default function CategoriesPage() {
   );
 }
 
-// Individual Category Card Component
+// Category List Component
+function CategoryList({ title, categories, color, onEdit, onDelete }) {
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="px-6 py-4 border-b border-gray-200">
+        <h2 className={`text-xl font-semibold text-${color}-600`}>{title}</h2>
+        <p className="text-gray-600 text-sm">{`Categories for tracking ${color}`}</p>
+      </div>
+      <div className="p-6">
+        {categories.length === 0 ? (
+          <p className="text-gray-500 text-center py-4">No {title.toLowerCase()} yet</p>
+        ) : (
+          <div className="space-y-3">
+            {categories.map(cat => (
+              <CategoryCard
+                key={cat.id}
+                category={cat}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Category Card Component
 function CategoryCard({ category, onEdit, onDelete }) {
   const isExpense = category.type === 'expense';
-  
   return (
     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
       <div className="flex items-center space-x-3">
@@ -272,28 +240,25 @@ function CategoryCard({ category, onEdit, onDelete }) {
   );
 }
 
-// Modal Component for Add/Edit
+// Modal Component
 function CategoryModal({ formData, editingCategory, onChange, onSubmit, onClose, error }) {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-md w-full">
+    <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
+      <div className="absolute inset-0 bg-black opacity-30" onClick={onClose}></div>
+      <div className="bg-white rounded-lg max-w-md w-full relative z-10">
         <div className="px-6 py-4 border-b border-gray-200">
           <h2 className="text-xl font-semibold">
             {editingCategory ? 'Edit Category' : 'Add New Category'}
           </h2>
         </div>
-        
         <form onSubmit={onSubmit} className="p-6 space-y-4">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded text-sm">
               {error}
             </div>
           )}
-          
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Category Name
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Category Name</label>
             <input
               type="text"
               name="name"
@@ -301,14 +266,11 @@ function CategoryModal({ formData, editingCategory, onChange, onSubmit, onClose,
               onChange={onChange}
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g., Food, Transportation, Salary"
+              placeholder="e.g., Food, Salary"
             />
           </div>
-          
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Type
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
             <select
               name="type"
               value={formData.type}
@@ -320,7 +282,6 @@ function CategoryModal({ formData, editingCategory, onChange, onSubmit, onClose,
               <option value="income">Income</option>
             </select>
           </div>
-          
           <div className="flex justify-end space-x-3 pt-4">
             <button
               type="button"
