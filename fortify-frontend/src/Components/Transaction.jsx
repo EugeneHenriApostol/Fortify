@@ -7,6 +7,10 @@ export default function TransactionsPage() {
   const [showModal, setShowModal] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
   
+  // Add month/year state for filtering
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  
   const [formData, setFormData] = useState({
     amount: '',
     type: 'expense',
@@ -14,10 +18,6 @@ export default function TransactionsPage() {
     description: '',
     categoryId: ''
   });
-
-  // Get current month for budget checking
-  const currentMonth = new Date().getMonth() + 1;
-  const currentYear = new Date().getFullYear();
 
   // Check if user is logged in
   useEffect(() => {
@@ -39,15 +39,17 @@ export default function TransactionsPage() {
     checkAuth();
   }, []);
 
+  // Update useEffect to include selectedMonth and selectedYear as dependencies
   useEffect(() => {
     fetchTransactions();
     fetchCategories();
     fetchBudget();
-  }, []);
+  }, [selectedMonth, selectedYear]); // Re-fetch when month/year changes
 
+  // Update fetchTransactions to use the new monthly endpoint
   const fetchTransactions = async () => {
     try {
-      const response = await fetch('http://localhost:5046/api/Transaction', {
+      const response = await fetch(`http://localhost:5046/api/Transaction/month/${selectedMonth}/${selectedYear}`, {
         credentials: 'include',
       });
       if (response.ok) {
@@ -73,9 +75,10 @@ export default function TransactionsPage() {
     }
   };
 
+  // Update fetchBudget to use selected month/year instead of current month
   const fetchBudget = async () => {
     try {
-      const response = await fetch(`http://localhost:5046/api/Budget/${currentMonth}/${currentYear}`, {
+      const response = await fetch(`http://localhost:5046/api/Budget/${selectedMonth}/${selectedYear}`, {
         credentials: 'include',
       });
       if (response.ok) {
@@ -123,7 +126,7 @@ export default function TransactionsPage() {
       });
 
       if (response.ok) {
-        fetchTransactions();
+        fetchTransactions(); // Refresh the transactions list
         resetForm();
       }
     } catch (err) {
@@ -141,7 +144,7 @@ export default function TransactionsPage() {
       });
 
       if (response.ok) {
-        fetchTransactions();
+        fetchTransactions(); // Refresh the transactions list
       }
     } catch (err) {
       console.error('Failed to delete transaction');
@@ -172,7 +175,7 @@ export default function TransactionsPage() {
     setShowModal(false);
   };
 
-  // Calculate totals
+  // Calculate totals - now using the filtered transactions
   const totalIncome = transactions
     .filter(t => t.type === 'income')
     .reduce((sum, t) => sum + t.amount, 0);
@@ -199,6 +202,8 @@ export default function TransactionsPage() {
 
   const budgetStatus = getBudgetStatus();
 
+  const currentMonthName = new Date(selectedYear, selectedMonth - 1).toLocaleString('default', { month: 'long' });
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-4xl mx-auto">
@@ -208,11 +213,38 @@ export default function TransactionsPage() {
           <p className="text-gray-600">Track your income and expenses</p>
         </div>
 
+        {/* Month/Year Selector */}
+        <div className="flex justify-center gap-4 mb-6">
+          <select 
+            value={selectedMonth} 
+            onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {Array.from({ length: 12 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>
+                {new Date(2000, i).toLocaleString('default', { month: 'long' })}
+              </option>
+            ))}
+          </select>
+          
+          <select 
+            value={selectedYear} 
+            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {[2023, 2024, 2025].map(year => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+
         {/* Budget Status */}
         {budget && (
           <div className="mb-6 bg-white p-4 rounded-lg shadow border">
             <div className="flex justify-between items-center mb-2">
-              <h3 className="font-medium text-gray-900">Monthly Budget Status</h3>
+              <h3 className="font-medium text-gray-900">
+                {currentMonthName} {selectedYear} Budget Status
+              </h3>
               <span className={`text-sm font-medium ${
                 budgetStatus === 'good' ? 'text-green-600' :
                 budgetStatus === 'warning' ? 'text-yellow-600' : 'text-red-600'
@@ -281,7 +313,7 @@ export default function TransactionsPage() {
         <div className="bg-white rounded-lg shadow border">
           {transactions.length === 0 ? (
             <div className="text-center p-8 text-gray-500">
-              No transactions yet. Add your first transaction!
+              No transactions for {currentMonthName} {selectedYear}. Add your first transaction!
             </div>
           ) : (
             <div className="divide-y">
@@ -323,107 +355,113 @@ export default function TransactionsPage() {
 
       {/* Add/Edit Transaction Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white p-6 rounded-lg max-w-md w-full">
-            <h2 className="text-lg font-bold mb-4">
+      <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
+        {/* Background overlay - matches your category modal style */}
+        <div className="absolute inset-0 bg-black opacity-30" onClick={resetForm}></div>
+        
+        {/* Modal content */}
+        <div className="bg-white rounded-lg max-w-md w-full relative z-10">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-bold">
               {editingTransaction ? 'Edit Transaction' : 'Add Transaction'}
             </h2>
-            
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Type */}
-              <div>
-                <label className="block text-sm font-medium mb-1">Type</label>
-                <select 
-                  value={formData.type}
-                  onChange={(e) => setFormData({...formData, type: e.target.value})}
-                  className="w-full p-2 border rounded"
-                  required
-                >
-                  <option value="expense">Expense</option>
-                  <option value="income">Income</option>
-                </select>
-              </div>
-
-              {/* Amount */}
-              <div>
-                <label className="block text-sm font-medium mb-1">Amount</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={formData.amount}
-                  onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                  className="w-full p-2 border rounded"
-                  placeholder="0.00"
-                  required
-                />
-              </div>
-
-              {/* Description */}
-              <div>
-                <label className="block text-sm font-medium mb-1">Description</label>
-                <input
-                  type="text"
-                  value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  className="w-full p-2 border rounded"
-                  placeholder="What was this for?"
-                  required
-                />
-              </div>
-
-              {/* Date */}
-              <div>
-                <label className="block text-sm font-medium mb-1">Date</label>
-                <input
-                  type="date"
-                  value={formData.date}
-                  onChange={(e) => setFormData({...formData, date: e.target.value})}
-                  className="w-full p-2 border rounded"
-                  required
-                />
-              </div>
-
-              {/* Category */}
-              <div>
-                <label className="block text-sm font-medium mb-1">Category</label>
-                <select 
-                  value={formData.categoryId}
-                  onChange={(e) => setFormData({...formData, categoryId: e.target.value})}
-                  className="w-full p-2 border rounded"
-                  required
-                >
-                  <option value="">Select a category</option>
-                  {categories
-                    .filter(cat => cat.type === formData.type)
-                    .map(category => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))
-                  }
-                </select>
-              </div>
-
-              {/* Buttons */}
-              <div className="flex gap-2 pt-4">
-                <button 
-                  type="button"
-                  onClick={resetForm}
-                  className="flex-1 p-2 border rounded hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 p-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                  {editingTransaction ? 'Update' : 'Add'} Transaction
-                </button>
-              </div>
-            </form>
           </div>
+          
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            {/* Type */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+              <select 
+                value={formData.type}
+                onChange={(e) => setFormData({...formData, type: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+
+            {/* Amount */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData.amount}
+                onChange={(e) => setFormData({...formData, amount: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="0.00"
+                required
+              />
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <input
+                type="text"
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="What was this for?"
+                required
+              />
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+              <input
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData({...formData, date: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+
+            {/* Category */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select 
+                value={formData.categoryId}
+                onChange={(e) => setFormData({...formData, categoryId: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="">Select a category</option>
+                {categories
+                  .filter(cat => cat.type === formData.type)
+                  .map(category => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))
+                }
+              </select>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex justify-end space-x-3 pt-4">
+              <button 
+                type="button"
+                onClick={resetForm}
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                {editingTransaction ? 'Update' : 'Add'} Transaction
+              </button>
+            </div>
+          </form>
         </div>
-      )}
+      </div>
+    )}
     </div>
   );
 }
