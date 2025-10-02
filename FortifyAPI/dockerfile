@@ -1,0 +1,26 @@
+# Use ASP.NET runtime as base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+WORKDIR /app
+EXPOSE 5046
+
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+# Copy csproj and restore as distinct layers
+COPY ["FortifyAPI.csproj", "./"]
+RUN dotnet restore "FortifyAPI.csproj"
+
+# Copy everything else and build
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "FortifyAPI.csproj" -c Release -o /app/build
+
+RUN dotnet publish "FortifyAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Final stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+WORKDIR /app
+COPY --from=build /app/publish .
+EXPOSE 5046
+ENTRYPOINT ["dotnet", "FortifyAPI.dll"]
