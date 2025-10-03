@@ -4,9 +4,10 @@ services:
       context: ./FortifyAPI
       dockerfile: Dockerfile
     ports:
-      - "5046:8080"
+      - "5046:5046"  
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5046
       - ConnectionStrings__DefaultConnection=Server=db;Database=FortifyDb;User=sa;Password=Password1234!;TrustServerCertificate=True;
     depends_on:
       - db
@@ -19,17 +20,18 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Password1234!
+      - MSSQL_PID=Express
     volumes:
       - sql_data:/var/opt/mssql
 
   fortifyfrontend:
-      build:
-        context: ./fortify-frontend
-        dockerfile: Dockerfile
-      ports:
-        - "5173:5173"
-      depends_on:
-        - fortifyapi
+    build:
+      context: ./fortify-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - fortifyapi
 
 volumes:
   sql_data:

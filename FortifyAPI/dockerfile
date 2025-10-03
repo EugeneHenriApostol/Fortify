@@ -7,16 +7,20 @@ EXPOSE 5046
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Copy csproj and restore (no FortifyAPI prefix since context is already FortifyAPI)
-COPY *.csproj ./
-RUN dotnet restore
+# Copy csproj and restore as distinct layers
+COPY ["FortifyAPI.csproj", "./"]
+RUN dotnet restore "FortifyAPI.csproj"
 
 # Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o /app/publish
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "FortifyAPI.csproj" -c Release -o /app/build
+
+RUN dotnet publish "FortifyAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Final stage
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
+EXPOSE 5046
 ENTRYPOINT ["dotnet", "FortifyAPI.dll"]
