@@ -19,7 +19,6 @@ namespace FortifyAPI.Model
         public User? User { get; set; }
 
         // navigation properties
-        public ICollection<Budget> Budgets { get; set; } = new List<Budget>();
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }

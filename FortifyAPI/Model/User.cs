@@ -16,9 +16,6 @@ namespace FortifyAPI.Model
         [MaxLength(50)]
         public required string LastName { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? UpdatedAt { get; set; }
-
         // navigation properties
         public ICollection<Budget> Budgets { get; set; } = new List<Budget>();
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
