@@ -7,7 +7,6 @@ export default function BudgetsPage() {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
 
-
   // check if a user is logged in
   useEffect(() => {
     const checkAuth = async () => {
@@ -73,6 +72,11 @@ export default function BudgetsPage() {
     } catch (err) {
       console.error('Failed to set budget');
     }
+  };
+
+  const resetForm = () => {
+    setAmount('');
+    setShowModal(false);
   };
 
   const currentMonth = new Date(year, month - 1).toLocaleString('default', { month: 'long' });
@@ -142,33 +146,40 @@ export default function BudgetsPage() {
         </div>
       </div>
 
-      {/* Set Budget Modal */}
+      {/* Set Budget Modal - Updated to match Categories modal style */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white p-6 rounded-lg max-w-sm w-full">
-            <h2 className="text-lg font-bold mb-4">
-              {budget ? 'Change Budget' : 'Set Budget'}
-            </h2>
-            <form onSubmit={handleSubmit}>
+        <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
+          {/* Background overlay */}
+          <div className="absolute inset-0 bg-black opacity-30" onClick={resetForm}></div>
+          
+          {/* Modal content */}
+          <div className="bg-white rounded-lg max-w-sm w-full relative z-10">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-bold">
+                {budget ? 'Change Budget' : 'Set Budget'}
+              </h2>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="p-6">
               <input
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="Amount"
-                className="w-full p-2 border rounded mb-4"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
                 required
               />
-              <div className="flex gap-2">
+              <div className="flex justify-end space-x-3">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
-                  className="flex-1 p-2 border rounded hover:bg-gray-50"
+                  onClick={resetForm}
+                  className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 p-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                 >
                   Save
                 </button>

@@ -3,10 +3,16 @@ using FortifyAPI.Model;
 
 namespace FortifyAPI.Service
 {
-    public interface IBudgetService
+    // write operations
+    public interface IBudgetWriterService
     {
         Task<BudgetResponseDto> SetBudgetAsync(string userId, BudgetDto dto);
-        Task<BudgetResponseDto?> GetBudgetAsync(string userId, int month, int year);
         Task<BudgetResponseDto?> UpdateBudgetAsync(string userId, BudgetDto dto);
+    }
+
+    // read-only operations
+    public interface IBudgetReaderService
+    {
+        Task<BudgetResponseDto?> GetBudgetAsync(string userId, int month, int year);
     }
 }

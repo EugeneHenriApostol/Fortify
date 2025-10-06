@@ -8,18 +8,21 @@ using FortifyAPI.Model;
 
 namespace FortifyAPI.Service
 {
-public class CategoryService : ICategoryService
+public class CategoryService : ICategoryWriterService, ICategoryReaderService
     {
-        private readonly ICategoryRepository _repo;
+        private readonly ICategoryWriterRepository _categoryWriterRepo;
+        private readonly ICategoryReaderRepository _categoryReaderRepo;
 
-        public CategoryService(ICategoryRepository repo)
+        public CategoryService(ICategoryWriterRepository categoryWriterRepo,
+                ICategoryReaderRepository categoryReaderRepo)
         {
-            _repo = repo;
+            _categoryWriterRepo = categoryWriterRepo;
+            _categoryReaderRepo = categoryReaderRepo;
         }
 
         public async Task<IEnumerable<CategoryDto>> GetAllAsync(string userId)
         {
-            var categories = await _repo.GetAllAsync(userId);
+            var categories = await _categoryReaderRepo.GetAllAsync(userId);
             return categories.Select(c => new CategoryDto
             {
                 Id = c.Id,
@@ -30,7 +33,7 @@ public class CategoryService : ICategoryService
 
         public async Task<CategoryDto?> GetByIdAsync(int id, string userId)
         {
-            var category = await _repo.GetByIdAsync(id, userId);
+            var category = await _categoryReaderRepo.GetByIdAsync(id, userId);
             return category == null ? null : new CategoryDto
             {
                 Id = category.Id,
@@ -48,7 +51,7 @@ public class CategoryService : ICategoryService
                 UserId = userId
             };
 
-            var created = await _repo.AddAsync(category);
+            var created = await _categoryWriterRepo.AddAsync(category);
             return new CategoryDto
             {
                 Id = created.Id,
@@ -67,7 +70,7 @@ public class CategoryService : ICategoryService
                 UserId = userId
             };
 
-            var updated = await _repo.UpdateAsync(category);
+            var updated = await _categoryWriterRepo.UpdateAsync(category);
             return updated == null ? null : new CategoryDto
             {
                 Id = updated.Id,
@@ -78,7 +81,7 @@ public class CategoryService : ICategoryService
 
         public async Task<bool> DeleteAsync(int id, string userId)
         {
-            return await _repo.DeleteAsync(id, userId);
+            return await _categoryWriterRepo.DeleteAsync(id, userId);
         }
     }
 }

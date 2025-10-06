@@ -6,12 +6,18 @@ using FortifyAPI.DTO;
 
 namespace FortifyAPI.Service
 {
-    public interface ICategoryService
+    // write operations
+    public interface ICategoryWriterService
     {
-        Task<IEnumerable<CategoryDto>> GetAllAsync(string userId);
-        Task<CategoryDto?> GetByIdAsync(int id, string userId);
         Task<CategoryDto> AddAsync(CreateCategoryDto dto, string userId);
         Task<CategoryDto?> UpdateAsync(int id, CreateCategoryDto dto, string userId);
         Task<bool> DeleteAsync(int id, string userId);
+    }
+
+    // read-only operations
+    public interface ICategoryReaderService
+    {
+        Task<IEnumerable<CategoryDto>> GetAllAsync(string userId);
+        Task<CategoryDto?> GetByIdAsync(int id, string userId);
     }
 }

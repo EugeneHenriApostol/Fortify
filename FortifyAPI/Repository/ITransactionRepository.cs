@@ -6,13 +6,19 @@ using FortifyAPI.Model;
 
 namespace FortifyAPI.Repository
 {
-    public interface ITransactionRepository
+    // write operations
+    public interface ITransactionWriterRepository
     {
-        Task<Transaction?> GetByIdAsync(int id, string userId);
-        Task<IEnumerable<Transaction>> GetAllAsync(string userId);
         Task<Transaction> AddAsync(Transaction transaction);
         Task<Transaction> UpdateAsync(Transaction transaction);
         Task<bool> DeleteAsync(int id, string userId);
+    }
+
+    // read-only operations
+    public interface ITransactionReaderRepository
+    {
+        Task<Transaction?> GetByIdAsync(int id, string userId);
+        Task<IEnumerable<Transaction>> GetAllAsync(string userId);
         Task<IEnumerable<Transaction>> GetByMonthAsync(string userId, int month, int year);
     }
 }

@@ -8,20 +8,24 @@ using FortifyAPI.Repository;
 
 namespace FortifyAPI.Service
 {
-    public class TransactionService : ITransactionService
+    public class TransactionService : ITransactionWriterService, ITransactionReaderService
     {
-        private readonly ITransactionRepository _transactionRepo;
-        private readonly ICategoryRepository _categoryRepo;
+        private readonly ITransactionReaderRepository _transactionReaderRepo;
+        private readonly ITransactionWriterRepository _transactionWriterRepo;
+        private readonly ICategoryReaderRepository _categoryReaderRepo;
 
-        public TransactionService(ITransactionRepository transactionRepo, ICategoryRepository categoryRepo)
+        public TransactionService(ITransactionReaderRepository transactionReaderRepo,
+                ITransactionWriterRepository transactionWriterRepo,
+                ICategoryReaderRepository categoryReaderRepo)
         {
-            _transactionRepo = transactionRepo;
-            _categoryRepo = categoryRepo;
+            _transactionReaderRepo = transactionReaderRepo;
+            _transactionWriterRepo = transactionWriterRepo;
+            _categoryReaderRepo = categoryReaderRepo;
         }
 
         public async Task<IEnumerable<TransactionResponseDto>> GetAllAsync(string userId)
         {
-            var transactions = await _transactionRepo.GetAllAsync(userId);
+            var transactions = await _transactionReaderRepo.GetAllAsync(userId);
             return transactions.Select(t => new TransactionResponseDto
             {
                 Id = t.Id,
@@ -36,7 +40,7 @@ namespace FortifyAPI.Service
 
         public async Task<TransactionResponseDto?> GetByIdAsync(int id, string userId)
         {
-            var t = await _transactionRepo.GetByIdAsync(id, userId);
+            var t = await _transactionReaderRepo.GetByIdAsync(id, userId);
             if (t == null) return null;
 
             return new TransactionResponseDto
@@ -53,7 +57,7 @@ namespace FortifyAPI.Service
 
         public async Task<TransactionResponseDto> AddAsync(TransactionCreateDto dto, string userId)
         {
-            var category = await _categoryRepo.GetByIdAsync(dto.CategoryId, userId);
+            var category = await _categoryReaderRepo.GetByIdAsync(dto.CategoryId, userId);
             if (category == null) throw new Exception("Invalid category.");
 
             var transaction = new Transaction
@@ -66,7 +70,7 @@ namespace FortifyAPI.Service
                 CategoryId = dto.CategoryId
             };
 
-            var saved = await _transactionRepo.AddAsync(transaction);
+            var saved = await _transactionWriterRepo.AddAsync(transaction);
 
             return new TransactionResponseDto
             {
@@ -82,10 +86,10 @@ namespace FortifyAPI.Service
 
         public async Task<TransactionResponseDto> UpdateAsync(TransactionUpdateDto dto, string userId)
         {
-            var existing = await _transactionRepo.GetByIdAsync(dto.Id, userId);
+            var existing = await _transactionReaderRepo.GetByIdAsync(dto.Id, userId);
             if (existing == null) throw new Exception("Transaction not found.");
 
-            var category = await _categoryRepo.GetByIdAsync(dto.CategoryId, userId);
+            var category = await _categoryReaderRepo.GetByIdAsync(dto.CategoryId, userId);
             if (category == null) throw new Exception("Invalid category.");
 
             existing.Amount = dto.Amount;
@@ -94,7 +98,7 @@ namespace FortifyAPI.Service
             existing.Description = dto.Description;
             existing.CategoryId = dto.CategoryId;
 
-            var updated = await _transactionRepo.UpdateAsync(existing);
+            var updated = await _transactionWriterRepo.UpdateAsync(existing);
 
             return new TransactionResponseDto
             {
@@ -110,12 +114,12 @@ namespace FortifyAPI.Service
 
         public async Task<bool> DeleteAsync(int id, string userId)
         {
-            return await _transactionRepo.DeleteAsync(id, userId);
+            return await _transactionWriterRepo.DeleteAsync(id, userId);
         }
 
         public async Task<IEnumerable<TransactionResponseDto>> GetByMonthAsync(string userId, int month, int year)
         {
-            var transactions = await _transactionRepo.GetByMonthAsync(userId, month, year);
+            var transactions = await _transactionReaderRepo.GetByMonthAsync(userId, month, year);
             return transactions.Select(t => new TransactionResponseDto
             {
                 Id = t.Id,

@@ -41,13 +41,19 @@ var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "YourSuperSecretKey"; // 
 var key = Encoding.UTF8.GetBytes(jwtSecret);
 
 // dependency injection
-builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IBudgetWriterRepository, BudgetRepository>();
+builder.Services.AddScoped<IBudgetReaderRepository, BudgetRepository>();
+builder.Services.AddScoped<ICategoryWriterRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryReaderRepository, CategoryRepository>();
+builder.Services.AddScoped<ITransactionReaderRepository, TransactionRepository>();
+builder.Services.AddScoped<ITransactionWriterRepository, TransactionRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IBudgetService, BudgetService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IBudgetWriterService, BudgetService>();
+builder.Services.AddScoped<IBudgetReaderService, BudgetService>();
+builder.Services.AddScoped<ICategoryWriterService, CategoryService>();
+builder.Services.AddScoped<ICategoryReaderService, CategoryService>();
+builder.Services.AddScoped<ITransactionWriterService, TransactionService>();
+builder.Services.AddScoped<ITransactionReaderService, TransactionService>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(options =>
@@ -141,10 +147,28 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
-}
 
-// app.UseHttpsRedirection();
+    var maxRetries = 10;
+    var delay = TimeSpan.FromSeconds(5);
+
+    for (int i = 0; i < maxRetries; i++)
+    {
+        try
+        {
+            db.Database.Migrate();
+            Console.WriteLine("Database migration applied successfully.");
+            break;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Migration attempt {i + 1} failed: {ex.Message}");
+            if (i == maxRetries - 1)
+                throw; // give up after retries
+            Thread.Sleep(delay);
+        }
+    }
+}
+app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
 app.UseAuthentication();

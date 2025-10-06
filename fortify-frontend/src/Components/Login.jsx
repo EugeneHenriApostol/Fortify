@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PiggyBank } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -7,6 +7,25 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
+
+  // check if user is already logged in
+  useEffect(() => {
+    const checkAuth = async() => {
+      try {
+        const res = await fetch("http://localhost:5046/api/Login/me", {
+          credentials: "include",
+        });
+
+        if (res.ok) {
+          window.location.href = "/dashboard";
+        }
+      } catch (err) {
+        console.error("Auth check failed", err);
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

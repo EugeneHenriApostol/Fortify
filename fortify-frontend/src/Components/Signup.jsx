@@ -11,6 +11,23 @@ export default function SignUpPage() {
     confirmPassword: "",
   });
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("http://localhost:5046/api/Login/me", {
+          credentials: "include",
+        });
+
+        if (res.ok) {
+          window.href.location = "/dashboard";
+        }
+      } catch (err) {
+        console.log("Auth check failed", err);
+      }
+    };
+    checkAuth();
+  }, []);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 

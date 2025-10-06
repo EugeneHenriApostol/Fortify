@@ -3,3 +3,10 @@ dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet tool install --global dotnet-ef
 dotnet add package Microsoft.EntityFrameworkCore.Design
 dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+{
+  "email": "eugene@gmail.com",
+  "firstName": "Gene",
+  "lastName": "Apostol",
+  "password": "1234qwer"
+}

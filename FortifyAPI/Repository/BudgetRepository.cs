@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FortifyAPI.Repository
 {
-    public class BudgetRepository : IBudgetRepository
+    public class BudgetRepository : IBudgetReaderRepository, IBudgetWriterRepository
     {
         private readonly AppDbContext _context;
         public BudgetRepository(AppDbContext context)

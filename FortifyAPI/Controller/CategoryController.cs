@@ -11,11 +11,14 @@ namespace FortifyAPI.Controller
     [Authorize]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryService _categoryService;
+        private readonly ICategoryWriterService _categoryWriterService;
+        private readonly ICategoryReaderService _categoryReaderService;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(ICategoryWriterService categoryWriterService,
+                    ICategoryReaderService categoryReaderService)
         {
-            _categoryService = categoryService;
+            _categoryWriterService = categoryWriterService;
+            _categoryReaderService = categoryReaderService;
         }
 
         private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
@@ -24,7 +27,7 @@ namespace FortifyAPI.Controller
         public async Task<IActionResult> GetAll()
         {
             var userId = GetUserId();
-            var categories = await _categoryService.GetAllAsync(userId);
+            var categories = await _categoryReaderService.GetAllAsync(userId);
             return Ok(categories);
         }
 
@@ -32,7 +35,7 @@ namespace FortifyAPI.Controller
         public async Task<IActionResult> GetById(int id)
         {
             var userId = GetUserId();
-            var category = await _categoryService.GetByIdAsync(id, userId);
+            var category = await _categoryReaderService.GetByIdAsync(id, userId);
             return category != null ? Ok(category) : NotFound();
         }
 
@@ -40,7 +43,7 @@ namespace FortifyAPI.Controller
         public async Task<IActionResult> Create(CreateCategoryDto dto)
         {
             var userId = GetUserId();
-            var created = await _categoryService.AddAsync(dto, userId);
+            var created = await _categoryWriterService.AddAsync(dto, userId);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
@@ -50,7 +53,7 @@ namespace FortifyAPI.Controller
             var userId = GetUserId();
             if (id != dto.Id) return BadRequest("Category ID mismatch.");
 
-            var updated = await _categoryService.UpdateAsync(id, new CreateCategoryDto
+            var updated = await _categoryWriterService.UpdateAsync(id, new CreateCategoryDto
             {
                 Name = dto.Name,
                 Type = dto.Type
@@ -62,7 +65,7 @@ namespace FortifyAPI.Controller
         public async Task<IActionResult> Delete(int id)
         {
             var userId = GetUserId();
-            var deleted = await _categoryService.DeleteAsync(id, userId);
+            var deleted = await _categoryWriterService.DeleteAsync(id, userId);
             return deleted ? NoContent() : NotFound();
         }
     }

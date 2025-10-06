@@ -356,7 +356,7 @@ export default function TransactionsPage() {
       {/* Add/Edit Transaction Modal */}
       {showModal && (
       <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
-        {/* Background overlay - matches your category modal style */}
+        {/* Background overlay */}
         <div className="absolute inset-0 bg-black opacity-30" onClick={resetForm}></div>
         
         {/* Modal content */}

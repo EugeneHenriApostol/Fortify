@@ -10,11 +10,14 @@ namespace FortifyAPI.Controller
     [Route("api/[controller]")]
     public class BudgetController : ControllerBase
     {
-        private readonly IBudgetService _budgetService;
+        private readonly IBudgetWriterService _budgetWriterService;
+        private readonly IBudgetReaderService _budgetReaderService;
 
-        public BudgetController(IBudgetService budgetService)
+        public BudgetController(IBudgetWriterService budgetWriterService,
+                    IBudgetReaderService budgetReaderService)
         {
-            _budgetService = budgetService;
+            _budgetWriterService = budgetWriterService;
+            _budgetReaderService = budgetReaderService;
         }
 
         [HttpPost]
@@ -31,7 +34,7 @@ namespace FortifyAPI.Controller
                 return Unauthorized();
             }
 
-            var budget = await _budgetService.SetBudgetAsync(userId, dto);
+            var budget = await _budgetWriterService.SetBudgetAsync(userId, dto);
             return Ok(budget);
         }
 
@@ -45,7 +48,7 @@ namespace FortifyAPI.Controller
                 return Unauthorized();
             }
 
-            var budget = await _budgetService.GetBudgetAsync(userId, month, year);
+            var budget = await _budgetReaderService.GetBudgetAsync(userId, month, year);
             if (budget == null)
             {
                 return NotFound();
@@ -64,7 +67,7 @@ namespace FortifyAPI.Controller
                 return Unauthorized();
             }
 
-            var budget = await _budgetService.UpdateBudgetAsync(userId, dto);
+            var budget = await _budgetWriterService.UpdateBudgetAsync(userId, dto);
             if (budget == null)
             {
                 return NotFound();

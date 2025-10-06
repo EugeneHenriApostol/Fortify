@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FortifyAPI.Repository
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : ICategoryWriterRepository, ICategoryReaderRepository
     {
         private readonly AppDbContext _context;
 

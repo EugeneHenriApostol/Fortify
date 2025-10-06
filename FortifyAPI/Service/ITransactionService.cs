@@ -7,13 +7,19 @@ using FortifyAPI.DTO;
 
 namespace FortifyAPI.Service
 {
-    public interface ITransactionService
+    // write operations
+    public interface ITransactionWriterService
     {
-        Task<IEnumerable<TransactionResponseDto>> GetAllAsync(string userId);
-        Task<TransactionResponseDto?> GetByIdAsync(int id, string userId);
         Task<TransactionResponseDto> AddAsync(TransactionCreateDto dto, string userId);
         Task<TransactionResponseDto> UpdateAsync(TransactionUpdateDto dto, string userId);
         Task<bool> DeleteAsync(int id, string userId);
+    }
+
+    // read-only operations
+    public interface ITransactionReaderService
+    {
+        Task<IEnumerable<TransactionResponseDto>> GetAllAsync(string userId);
+        Task<TransactionResponseDto?> GetByIdAsync(int id, string userId);
         Task<IEnumerable<TransactionResponseDto>> GetByMonthAsync(string userId, int month, int year);
     }
 }

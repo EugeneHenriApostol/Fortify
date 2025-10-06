@@ -8,10 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FortifyAPI.Repository
 {
-    public interface IBudgetRepository
+    // write operations
+    public interface IBudgetWriterRepository
     {
         Task<Budget> AddBudgetAsync(Budget budget);
         Task<Budget?> GetBudgetAsync(string userId, int month, int year);
         Task<Budget?> UpdateBudgetAsync(Budget budget);
+    }
+
+    // read-only operations
+    public interface IBudgetReaderRepository
+    {
+        Task<Budget?> GetBudgetAsync(string userId, int month, int year);
     }
 }

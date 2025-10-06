@@ -15,11 +15,14 @@ namespace FortifyAPI.Controller
     [Route("api/[controller]")]
     public class TransactionController : ControllerBase
     {
-        private readonly ITransactionService _transactionService;
+        private readonly ITransactionWriterService _transactionWriterService;
+        private readonly ITransactionReaderService _transactionReaderService;
 
-        public TransactionController(ITransactionService transactionService)
+        public TransactionController(ITransactionWriterService transactionWriterService,
+                ITransactionReaderService transactionReaderService)
         {
-            _transactionService = transactionService;
+            _transactionWriterService = transactionWriterService;
+            _transactionReaderService = transactionReaderService;
         }
 
         private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
@@ -29,7 +32,7 @@ namespace FortifyAPI.Controller
         public async Task<IActionResult> GetAll()
         {
             var userId = GetUserId();
-            var transactions = await _transactionService.GetAllAsync(userId);
+            var transactions = await _transactionReaderService.GetAllAsync(userId);
             return Ok(transactions); // List<TransactionResponseDto>
         }
 
@@ -38,7 +41,7 @@ namespace FortifyAPI.Controller
         public async Task<IActionResult> GetById(int id)
         {
             var userId = GetUserId();
-            var transaction = await _transactionService.GetByIdAsync(id, userId);
+            var transaction = await _transactionReaderService.GetByIdAsync(id, userId);
             return transaction != null ? Ok(transaction) : NotFound();
         }
 
@@ -47,7 +50,7 @@ namespace FortifyAPI.Controller
         public async Task<IActionResult> Create([FromBody] TransactionCreateDto dto)
         {
             var userId = GetUserId();
-            var created = await _transactionService.AddAsync(dto, userId);
+            var created = await _transactionWriterService.AddAsync(dto, userId);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
@@ -61,7 +64,7 @@ namespace FortifyAPI.Controller
                 return BadRequest("Transaction ID mismatch.");
             }
 
-            var updated = await _transactionService.UpdateAsync(dto, userId);
+            var updated = await _transactionWriterService.UpdateAsync(dto, userId);
             return Ok(updated);
         }
 
@@ -70,7 +73,7 @@ namespace FortifyAPI.Controller
         public async Task<IActionResult> Delete(int id)
         {
             var userId = GetUserId();
-            var deleted = await _transactionService.DeleteAsync(id, userId);
+            var deleted = await _transactionWriterService.DeleteAsync(id, userId);
             return deleted ? NoContent() : NotFound();
         }
 
@@ -78,7 +81,7 @@ namespace FortifyAPI.Controller
         public async Task<IActionResult> GetByMonth(int month, int year)
         {
             var userId = GetUserId();
-            var transactions = await _transactionService.GetByMonthAsync(userId, month, year);
+            var transactions = await _transactionReaderService.GetByMonthAsync(userId, month, year);
             return Ok(transactions);
         }
     }

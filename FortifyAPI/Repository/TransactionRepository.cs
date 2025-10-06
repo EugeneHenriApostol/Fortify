@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FortifyAPI.Repository
 {
-    public class TransactionRepository : ITransactionRepository
+    public class TransactionRepository : ITransactionReaderRepository, ITransactionWriterRepository
     {
         private readonly AppDbContext _context;
 
