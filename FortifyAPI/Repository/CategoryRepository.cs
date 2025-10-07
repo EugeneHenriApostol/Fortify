@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FortifyAPI.Model;
 using FortifyAPI.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 
 namespace FortifyAPI.Repository
 {

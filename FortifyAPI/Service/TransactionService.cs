@@ -41,7 +41,10 @@ namespace FortifyAPI.Service
         public async Task<TransactionResponseDto?> GetByIdAsync(int id, string userId)
         {
             var t = await _transactionReaderRepo.GetByIdAsync(id, userId);
-            if (t == null) return null;
+            if (t == null)
+            {
+                return null;
+            }
 
             return new TransactionResponseDto
             {
@@ -58,7 +61,10 @@ namespace FortifyAPI.Service
         public async Task<TransactionResponseDto> AddAsync(TransactionCreateDto dto, string userId)
         {
             var category = await _categoryReaderRepo.GetByIdAsync(dto.CategoryId, userId);
-            if (category == null) throw new Exception("Invalid category.");
+            if (category == null)
+            {
+                throw new Exception("Invalid category.");
+            }
 
             var transaction = new Transaction
             {
@@ -87,10 +93,17 @@ namespace FortifyAPI.Service
         public async Task<TransactionResponseDto> UpdateAsync(TransactionUpdateDto dto, string userId)
         {
             var existing = await _transactionReaderRepo.GetByIdAsync(dto.Id, userId);
-            if (existing == null) throw new Exception("Transaction not found.");
+            if (existing == null)
+            {
+                throw new Exception("Transaction not found.");
+            }
 
             var category = await _categoryReaderRepo.GetByIdAsync(dto.CategoryId, userId);
-            if (category == null) throw new Exception("Invalid category.");
+            if (category == null)
+            {
+                throw new Exception("Invalid category.");
+
+            }
 
             existing.Amount = dto.Amount;
             existing.Type = dto.Type;

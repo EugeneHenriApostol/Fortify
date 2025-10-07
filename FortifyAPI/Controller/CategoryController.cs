@@ -23,6 +23,7 @@ namespace FortifyAPI.Controller
 
         private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -31,6 +32,7 @@ namespace FortifyAPI.Controller
             return Ok(categories);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -39,6 +41,7 @@ namespace FortifyAPI.Controller
             return category != null ? Ok(category) : NotFound();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateCategoryDto dto)
         {
@@ -47,6 +50,7 @@ namespace FortifyAPI.Controller
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateCategoryDto dto)
         {
@@ -61,6 +65,7 @@ namespace FortifyAPI.Controller
             return Ok(updated);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
