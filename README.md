@@ -1,7 +1,7 @@
-Fortify - Personal Budget Tracker
+# Fortify - Personal Budget Tracker
 A full-stack web application for managing personal finances, built with ASP.NET Core Web API backend and React.js frontend with Tailwind CSS.
 
-🚀 Features
+## 🚀 Features
 User Authentication - Secure login/register with JWT tokens
 
 Budget Management - Set monthly spending limits
@@ -14,7 +14,7 @@ Budget Progress - Visual indicators showing spending against budget
 
 Monthly Views - Filter transactions and budgets by month/year
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
 Backend
 ASP.NET Core 9.0 - Web API
 
@@ -37,7 +37,7 @@ Vite - Build tool
 
 React Router - Client-side routing
 
-📋 Prerequisites
+## 📋 Prerequisites
 .NET 9.0 SDK
 
 Node.js 20+
@@ -46,60 +46,63 @@ Docker Desktop (for containerized deployment)
 
 SQL Server (or use Docker)
 
-🏗️ Project Structure
-text
+## 🏗️ Project Structure
 FortifyApp/
 ├── FortifyAPI/                 # Backend ASP.NET Core API
 │   ├── Controllers/           # API endpoints
-│   ├── Models/               # Data models
-│   ├── DTOs/                 # Data transfer objects
-│   ├── Services/             # Business logic
-│   ├── Repository/           # Data access layer
-│   ├── Data/                 # DbContext and migrations
-│   └── FortifyAPI.csproj     # Project file
+│   ├── Models/                # Data models
+│   ├── DTOs/                  # Data transfer objects
+│   ├── Services/              # Business logic
+│   ├── Repository/            # Data access layer
+│   ├── Data/                  # DbContext and migrations
+│   └── FortifyAPI.csproj
 ├── fortify-frontend/          # React.js frontend
 │   ├── src/
-│   │   ├── Components/       # React components
-│   │   ├── App.jsx          # Main app component
-│   │   └── main.jsx         # Entry point
+│   │   ├── Components/        # UI components
+│   │   ├── App.jsx
+│   │   └── main.jsx
 │   ├── package.json
 │   └── vite.config.js
-└── docker-compose.yml        # Docker composition
-🚀 Quick Start
+└── docker-compose.yml         # Docker composition
+
+
+## 🚀 Quick Start
 Option 1: Development Setup (Without Docker)
 Backend Setup
 bash
-# Navigate to backend directory
+## Navigate to backend directory
 cd FortifyAPI
 
-# Restore NuGet packages
+## Restore NuGet packages
 dotnet restore
 
-# Run database migrations
+## Run database migrations
 dotnet ef database update
 
-# Start the backend API
+## Start the backend API
 dotnet run
 Backend will be available at: http://localhost:5046
 
 Frontend Setup
 bash
-# Navigate to frontend directory
+
+## Navigate to frontend directory
 cd ../fortify-frontend
 
-# Install dependencies
+## Install dependencies
 npm install
 
-# Start development server
+## Start development server
 npm run dev
 Frontend will be available at: http://localhost:5173
 
 Option 2: Docker Setup (Recommended)
 bash
-# Build and start all services
+
+## Build and start all services
 docker-compose up --build
 
-# Or run in detached mode
+## Or run in detached mode
 docker-compose up -d --build
 Services will be available at:
 
@@ -109,7 +112,7 @@ Backend API: http://localhost:5046
 
 Database: localhost:1433
 
-🔧 Configuration
+## 🔧 Configuration
 Backend Configuration
 Update appsettings.json in the FortifyAPI project:
 
@@ -129,22 +132,23 @@ Update API base URL in frontend components if needed:
 
 javascript
 const API_BASE_URL = "http://localhost:5046/api";
-📊 API Endpoints
-Authentication
+
+## 📊 API Endpoints
+### Authentication
 POST /api/Login - User login
 
 POST /api/Register - User registration
 
 GET /api/Login/me - Get current user info
 
-Budgets
+### Budgets
 GET /api/Budget/{month}/{year} - Get monthly budget
 
 POST /api/Budget - Set monthly budget
 
 PUT /api/Budget - Update budget
 
-Transactions
+### Transactions
 GET /api/Transaction - Get all transactions
 
 GET /api/Transaction/month/{month}/{year} - Get monthly transactions
@@ -155,7 +159,7 @@ PUT /api/Transaction/{id} - Update transaction
 
 DELETE /api/Transaction/{id} - Delete transaction
 
-Categories
+### Categories
 GET /api/Categories - Get all categories
 
 POST /api/Categories - Create category
@@ -164,8 +168,8 @@ PUT /api/Categories/{id} - Update category
 
 DELETE /api/Categories/{id} - Delete category
 
-🗃️ Database Schema
-Key Tables
+## 🗃️ Database Schema
+### Key Tables
 Users - User accounts and authentication
 
 Budgets - Monthly spending limits
@@ -174,7 +178,7 @@ Categories - Transaction categories (Income/Expense)
 
 Transactions - Individual income/expense records
 
-Relationships
+### Relationships
 User 1:N Budgets
 
 User 1:N Categories
@@ -183,7 +187,7 @@ User 1:N Transactions
 
 Category 1:N Transactions
 
-🐛 Troubleshooting
+## 🐛 Troubleshooting
 Common Issues
 Database Connection Issues
 
@@ -210,11 +214,11 @@ Update CORS settings in Program.cs if using different ports
 Docker Issues
 
 bash
-# Reset Docker environment
+## Reset Docker environment
 docker-compose down -v
 docker system prune -a
 docker-compose up --build
-🧪 Testing
+## 🧪 Testing
 Backend Testing
 bash
 cd FortifyAPI
@@ -223,7 +227,7 @@ Frontend Testing
 bash
 cd fortify-frontend
 npm test
-📝 Environment Variables
+## 📝 Environment Variables
 Backend (.env or appsettings.json)
 text
 ASPNETCORE_ENVIRONMENT=Development
@@ -232,7 +236,7 @@ Jwt__Key=Your_JWT_Secret_Key
 Frontend (.env)
 text
 VITE_API_BASE_URL=http://localhost:5046
-🔒 Security Features
+## 🔒 Security Features
 JWT-based authentication with secure HTTP-only cookies
 
 Password hashing with ASP.NET Core Identity
@@ -245,7 +249,7 @@ SQL injection protection with Entity Framework
 
 XSS protection with proper content types
 
-🤝 Contributing
+## 🤝 Contributing
 Fork the repository
 
 Create a feature branch (git checkout -b feature/amazing-feature)
@@ -256,10 +260,10 @@ Push to the branch (git push origin feature/amazing-feature)
 
 Open a Pull Request
 
-📄 License
+## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-🙏 Acknowledgments
+## 🙏 Acknowledgments
 ASP.NET Core team for the excellent web framework
 
 React.js team for the frontend library
@@ -268,7 +272,7 @@ Tailwind CSS for the utility-first CSS framework
 
 Vite for the fast build tool
 
-📞 Support
+## 📞 Support
 If you encounter any issues or have questions:
 
 Check the Troubleshooting section
