@@ -1,119 +1,107 @@
-Fortify - Personal Budget Tracker
-A full-stack web application for managing personal finances, built with ASP.NET Core Web API backend and React.js frontend with Tailwind CSS.
+💸 Fortify — Personal Budget Tracker
+
+A full-stack web application for managing personal finances, built with ASP.NET Core Web API (backend) and React.js with Tailwind CSS (frontend).
 
 🚀 Features
-User Authentication - Secure login/register with JWT tokens
 
-Budget Management - Set monthly spending limits
-
-Transaction Tracking - Record income and expenses with categories
-
-Category Management - Organize transactions by custom categories
-
-Budget Progress - Visual indicators showing spending against budget
-
-Monthly Views - Filter transactions and budgets by month/year
+✅ User Authentication — Secure login/register with JWT tokens
+💰 Budget Management — Set monthly spending limits
+📊 Transaction Tracking — Record income and expenses
+🏷️ Category Management — Organize by custom categories
+📈 Budget Progress — Visual indicators for spending vs. budget
+🗓️ Monthly Views — Filter transactions by month/year
 
 🛠️ Tech Stack
 Backend
-ASP.NET Core 9.0 - Web API
 
-Entity Framework Core - ORM
+⚙️ ASP.NET Core 9.0 — Web API
 
-ASP.NET Core Identity - Authentication
+🗄️ Entity Framework Core — ORM
 
-JWT Bearer Tokens - Secure authentication
+🔐 ASP.NET Core Identity — Authentication
 
-SQL Server - Database
+🔑 JWT Bearer Tokens — Secure auth
 
-Docker - Containerization
+🧱 SQL Server — Database
+
+🐳 Docker — Containerization
 
 Frontend
-React.js 18 - Frontend framework
 
-Tailwind CSS - Styling
+⚛️ React.js 18 — UI framework
 
-Vite - Build tool
+🎨 Tailwind CSS — Styling
 
-React Router - Client-side routing
+⚡ Vite — Build tool
+
+🌐 React Router — Routing
 
 📋 Prerequisites
+
+Before running the project, ensure you have:
+
 .NET 9.0 SDK
 
 Node.js 20+
 
-Docker Desktop (for containerized deployment)
+Docker Desktop
 
-SQL Server (or use Docker)
+SQL Server (local or via Docker)
 
 🏗️ Project Structure
-text
 FortifyApp/
 ├── FortifyAPI/                 # Backend ASP.NET Core API
 │   ├── Controllers/           # API endpoints
-│   ├── Models/               # Data models
-│   ├── DTOs/                 # Data transfer objects
-│   ├── Services/             # Business logic
-│   ├── Repository/           # Data access layer
-│   ├── Data/                 # DbContext and migrations
-│   └── FortifyAPI.csproj     # Project file
+│   ├── Models/                # Data models
+│   ├── DTOs/                  # Data transfer objects
+│   ├── Services/              # Business logic
+│   ├── Repository/            # Data access layer
+│   ├── Data/                  # DbContext and migrations
+│   └── FortifyAPI.csproj
 ├── fortify-frontend/          # React.js frontend
 │   ├── src/
-│   │   ├── Components/       # React components
-│   │   ├── App.jsx          # Main app component
-│   │   └── main.jsx         # Entry point
+│   │   ├── Components/        # UI components
+│   │   ├── App.jsx
+│   │   └── main.jsx
 │   ├── package.json
 │   └── vite.config.js
-└── docker-compose.yml        # Docker composition
-🚀 Quick Start
-Option 1: Development Setup (Without Docker)
-Backend Setup
-bash
-# Navigate to backend directory
+└── docker-compose.yml         # Docker composition
+
+⚙️ Quick Start
+🧩 Option 1: Development Setup (Without Docker)
+Backend
 cd FortifyAPI
-
-# Restore NuGet packages
 dotnet restore
-
-# Run database migrations
 dotnet ef database update
-
-# Start the backend API
 dotnet run
-Backend will be available at: http://localhost:5046
 
-Frontend Setup
-bash
-# Navigate to frontend directory
+
+Backend → http://localhost:5046
+
+Frontend
 cd ../fortify-frontend
-
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
-Frontend will be available at: http://localhost:5173
 
-Option 2: Docker Setup (Recommended)
-bash
-# Build and start all services
+
+Frontend → http://localhost:5173
+
+🐳 Option 2: Docker Setup (Recommended)
 docker-compose up --build
-
-# Or run in detached mode
+# or run in detached mode
 docker-compose up -d --build
-Services will be available at:
 
-Frontend: http://localhost:5173
 
-Backend API: http://localhost:5046
+Services:
 
-Database: localhost:1433
+🌐 Frontend → http://localhost:5173
+
+⚙️ Backend → http://localhost:5046
+
+🗄️ Database → localhost:1433
 
 🔧 Configuration
-Backend Configuration
-Update appsettings.json in the FortifyAPI project:
-
-json
+Backend (appsettings.json)
 {
   "ConnectionStrings": {
     "DefaultConnection": "Server=db;Database=FortifyDb;User=sa;Password=Password1234!;TrustServerCertificate=True;"
@@ -124,157 +112,158 @@ json
     "Audience": "FortifyUsers"
   }
 }
-Frontend Configuration
-Update API base URL in frontend components if needed:
 
-javascript
+Frontend (src/config.js or component)
 const API_BASE_URL = "http://localhost:5046/api";
+
 📊 API Endpoints
 Authentication
-POST /api/Login - User login
-
-POST /api/Register - User registration
-
-GET /api/Login/me - Get current user info
-
+Method	Endpoint	Description
+POST	/api/Login	User login
+POST	/api/SignUp	User registration
+GET	/api/Login/me	Get current user
 Budgets
-GET /api/Budget/{month}/{year} - Get monthly budget
-
-POST /api/Budget - Set monthly budget
-
-PUT /api/Budget - Update budget
-
+Method	Endpoint	Description
+GET	/api/Budget/{month}/{year}	Get monthly budget
+POST	/api/Budget	Create budget
+PUT	/api/Budget	Update budget
 Transactions
-GET /api/Transaction - Get all transactions
-
-GET /api/Transaction/month/{month}/{year} - Get monthly transactions
-
-POST /api/Transaction - Create transaction
-
-PUT /api/Transaction/{id} - Update transaction
-
-DELETE /api/Transaction/{id} - Delete transaction
-
+Method	Endpoint	Description
+GET	/api/Transaction	Get all transactions
+GET	/api/Transaction/month/{month}/{year}	Get monthly transactions
+POST	/api/Transaction	Create transaction
+PUT	/api/Transaction/{id}	Update
+DELETE	/api/Transaction/{id}	Delete
 Categories
-GET /api/Categories - Get all categories
-
-POST /api/Categories - Create category
-
-PUT /api/Categories/{id} - Update category
-
-DELETE /api/Categories/{id} - Delete category
-
+Method	Endpoint	Description
+GET	/api/Categories	Get all
+POST	/api/Categories	Create
+PUT	/api/Categories/{id}	Update
+DELETE	/api/Categories/{id}	Delete
 🗃️ Database Schema
 Key Tables
-Users - User accounts and authentication
 
-Budgets - Monthly spending limits
+Users — Authentication data
 
-Categories - Transaction categories (Income/Expense)
+Budgets — Monthly limits
 
-Transactions - Individual income/expense records
+Categories — Income/Expense types
+
+Transactions — Records of spending
 
 Relationships
-User 1:N Budgets
 
-User 1:N Categories
+User 1 → N Budgets
 
-User 1:N Transactions
+User 1 → N Categories
 
-Category 1:N Transactions
+User 1 → N Transactions
+
+Category 1 → N Transactions
+
+🧪 Testing
+
+Backend:
+
+cd FortifyAPI
+dotnet test
+
+
+Frontend:
+
+cd fortify-frontend
+npm test
 
 🐛 Troubleshooting
-Common Issues
 Database Connection Issues
 
-Ensure SQL Server is running
+Ensure SQL Server container is running: docker ps
 
-Check connection string in appsettings.json
+Check connection string
 
-Verify database exists and is accessible
+Reapply migrations if needed:
 
-JWT Token Issues
+dotnet ef database update
 
-Verify JWT secret key is set
+JWT / CORS
 
-Check token expiration settings
+Make sure JWT secret matches
 
-Ensure cookies are enabled in browser
+Verify backend CORS allows http://localhost:5173
 
-CORS Issues
-
-Backend CORS is configured for http://localhost:5173
-
-Update CORS settings in Program.cs if using different ports
-
-Docker Issues
-
-bash
-# Reset Docker environment
+Reset Docker
 docker-compose down -v
 docker system prune -a
 docker-compose up --build
-🧪 Testing
-Backend Testing
-bash
-cd FortifyAPI
-dotnet test
-Frontend Testing
-bash
-cd fortify-frontend
-npm test
+
 📝 Environment Variables
+
 Backend (.env or appsettings.json)
-text
+
 ASPNETCORE_ENVIRONMENT=Development
-ConnectionStrings__DefaultConnection=Your_Connection_String
+ConnectionStrings__DefaultConnection=Server=db;Database=FortifyDb;User=sa;Password=Password1234!
 Jwt__Key=Your_JWT_Secret_Key
+
+
 Frontend (.env)
-text
+
 VITE_API_BASE_URL=http://localhost:5046
+
 🔒 Security Features
-JWT-based authentication with secure HTTP-only cookies
 
-Password hashing with ASP.NET Core Identity
+JWT authentication with HTTP-only cookies
 
-CORS configuration for frontend-backend communication
+Password hashing via ASP.NET Identity
 
-Input validation and model binding
+CORS policy for frontend-backend communication
 
-SQL injection protection with Entity Framework
+SQL injection prevention (EF Core)
 
-XSS protection with proper content types
+XSS protection via proper content types
 
 🤝 Contributing
-Fork the repository
 
-Create a feature branch (git checkout -b feature/amazing-feature)
+Fork the repo
 
-Commit your changes (git commit -m 'Add some amazing feature')
+Create your feature branch
 
-Push to the branch (git push origin feature/amazing-feature)
+git checkout -b feature/amazing-feature
+
+
+Commit your changes
+
+git commit -m "Add some amazing feature"
+
+
+Push to the branch
+
+git push origin feature/amazing-feature
+
 
 Open a Pull Request
 
 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 🙏 Acknowledgments
-ASP.NET Core team for the excellent web framework
 
-React.js team for the frontend library
+Microsoft ASP.NET Core team
 
-Tailwind CSS for the utility-first CSS framework
+React.js team
 
-Vite for the fast build tool
+Tailwind CSS
+
+Vite
 
 📞 Support
-If you encounter any issues or have questions:
+
+If you encounter any issues:
 
 Check the Troubleshooting section
 
-Search existing GitHub Issues
+Search GitHub Issues
 
-Create a new issue with detailed information
+Or open a new issue with details
 
-Happy Budgeting! 💰
+💰 Happy Budgeting with Fortify!
