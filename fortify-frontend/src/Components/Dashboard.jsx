@@ -32,7 +32,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Simple Header */}
+      {/* Header */}
       <div className="bg-white border-b p-4 flex justify-between items-center">
         <h1 className="text-xl font-bold">Fortify</h1>
         <button 
@@ -52,7 +52,7 @@ export default function DashboardPage() {
           <p className="text-gray-600">Manage your budget and finances</p>
         </div>
 
-        {/* Improved Cards with Icons */}
+        {/* Cards */}
         <div className="space-y-4">
           <Link to="/category" className="block">
             <div className="bg-white p-6 rounded-lg border-2 border-blue-100 hover:border-blue-300 hover:shadow-md transition-all">

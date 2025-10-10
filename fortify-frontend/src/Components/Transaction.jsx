@@ -175,7 +175,7 @@ export default function TransactionsPage() {
     setShowModal(false);
   };
 
-  // Calculate totals - now using the filtered transactions
+  // Calculate totals using the filtered transactions
   const totalIncome = transactions
     .filter(t => t.type === 'income')
     .reduce((sum, t) => sum + t.amount, 0);

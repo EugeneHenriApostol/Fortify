@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, BarChart3, PiggyBank, Shield, TrendingUp } from "lucide-react";
+import { BarChart3, PiggyBank, Shield, TrendingUp } from "lucide-react";
 
 export default function LandingPage() {
   return (
